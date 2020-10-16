@@ -8,7 +8,7 @@ int main()
 	server->Accept();
 
 	std::string data = server->Read();
-	std::cout << data << std::endl;
+	std::cout << "\033[32mMessage from client:\033[00;39m " << data << std::endl;
 
 	server->Send("Message received! :)");
 
