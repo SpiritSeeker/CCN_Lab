@@ -21,15 +21,12 @@ namespace Socket {
 		void Bind(int queueLength = 3);
 		int Accept();
 
-		const Ref<Buffer>& Read(int socket = -1);
+		std::string Read(int socket = -1);
 		void Send(const std::string& message, int socket = -1);
-
-		const Ref<Buffer>& GetBuffer() { return m_Buffer; }
 
 		static Ref<SocketServer> Create(const SocketServerProps& serverProps = SocketServerProps());
 	private:
 		SocketServerProps m_Props;
-		Ref<Buffer> m_Buffer;
 		int m_Domain;
 		int m_ServerDescriptor;
 		struct sockaddr_in m_Address;
@@ -39,9 +36,6 @@ namespace Socket {
 	SocketServer::SocketServer(const SocketServerProps& serverProps)
 		: m_Props(serverProps)
 	{
-		m_Buffer = CreateRef<Buffer>();
-		m_Buffer->BufferSize = m_Props.BufferSize;
-
 		m_Domain = m_Props.UseIPv6 ? AF_INET6 : AF_INET;
 		int connectionType = m_Props.UseTCP ? SOCK_STREAM : SOCK_DGRAM;
 
@@ -97,22 +91,23 @@ namespace Socket {
 		return newSocket;
 	}
 
-	const Ref<Buffer>& SocketServer::Read(int socket)
+	std::string SocketServer::Read(int socket)
 	{
 		if (socket == -1) socket = activeConnection;
 		if (socket == -1)
 		{
 			SOCKET_ERROR("SERVER ERROR: No active connection to read!");
-			return m_Buffer;
+			std::string blankString("");
+			return blankString;
 		}
 
-		char *buffer = new char[m_Buffer->BufferSize];
-		read(socket, buffer, m_Buffer->BufferSize);
+		char *buffer = new char[m_Props.BufferSize];
+		read(socket, buffer, m_Props.BufferSize);
 
-		m_Buffer->Data = buffer;
+		std::string data(buffer);
 		delete[] buffer;
 
-		return m_Buffer;
+		return data;
 	}
 
 	void SocketServer::Send(const std::string& message, int socket)

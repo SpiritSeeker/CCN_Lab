@@ -20,15 +20,12 @@ namespace Socket {
 
 		void Connect(const std::string& address = "127.0.0.1");
 
-		const Ref<Buffer>& Read();
+		std::string Read();
 		void Send(const std::string& message);
-
-		const Ref<Buffer>& GetBuffer() { return m_Buffer; }
 
 		static Ref<SocketClient> Create(const SocketClientProps& clientProps = SocketClientProps());
 	private:
 		SocketClientProps m_Props;
-		Ref<Buffer> m_Buffer;
 		int m_Domain;
 		int m_ClientDescriptor;
 	};
@@ -36,9 +33,6 @@ namespace Socket {
 	SocketClient::SocketClient(const SocketClientProps& clientProps)
 		: m_Props(clientProps)
 	{
-		m_Buffer = CreateRef<Buffer>();
-		m_Buffer->BufferSize = m_Props.BufferSize;
-
 		m_Domain = m_Props.UseIPv6 ? AF_INET6 : AF_INET;
 		int connectionType = m_Props.UseTCP ? SOCK_STREAM : SOCK_DGRAM;
 
@@ -71,15 +65,15 @@ namespace Socket {
 		SOCKET_INFO(message);
 	}
 
-	const Ref<Buffer>& SocketClient::Read()
+	std::string SocketClient::Read()
 	{
-		char *buffer = new char[m_Buffer->BufferSize];
-		read(m_ClientDescriptor, buffer, m_Buffer->BufferSize);
+		char *buffer = new char[m_Props.BufferSize];
+		read(m_ClientDescriptor, buffer, m_Props.BufferSize);
 
-		m_Buffer->Data = buffer;
+		std::string data(buffer);
 		delete[] buffer;
 
-		return m_Buffer;
+		return data;
 	}
 
 	void SocketClient::Send(const std::string& message)

@@ -3,7 +3,7 @@
 
 int main()
 {
-	std::vector<std::string> data = { "11", 
+	std::vector<std::string> data = { "1", 
 									"2",
 									"3",
 									"4",
@@ -21,8 +21,8 @@ int main()
 	{
 		server->Send(data[dataIndex]);
 
-		auto buffer = server->Read();
-		if (buffer->Data == "ACK") dataIndex++;
+		std::string data = server->Read();
+		if (data == "ACK") dataIndex++;
 	}
 
 	return 0;

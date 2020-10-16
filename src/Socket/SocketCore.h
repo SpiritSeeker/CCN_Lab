@@ -27,12 +27,6 @@ namespace Socket {
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 
-	struct Buffer
-	{
-		std::string Data;
-		uint32_t BufferSize;
-	};
-
 	void SOCKET_ERROR(const std::string& message)
 	{
 		std::cout << "\033[01;31m" << message << "\033[00;39m" << std::endl;

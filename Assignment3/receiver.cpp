@@ -10,11 +10,11 @@ int main()
 
 	while (true)
 	{
-		auto buffer = client->Read();
+		std::string data = client->Read();
 		client->Send("ACK");
-		receivedData.push_back(buffer);
-		std::cout << buffer << " ";
-		if (buffer == "\n") break;
+		receivedData.push_back(data);
+		std::cout << data << " ";
+		if (data == "\n") break;
 	}
 
 	return 0;

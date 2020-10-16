@@ -8,3 +8,5 @@ workspace "CCN_Lab"
 	}
 
 include "Assignment1"
+include "Assignment2"
+include "Assignment3"

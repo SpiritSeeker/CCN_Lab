@@ -7,8 +7,8 @@ int main()
 	server->Bind();
 	server->Accept();
 
-	auto buffer = server->Read();
-	std::cout << buffer->Data << std::endl;
+	std::string data = server->Read();
+	std::cout << data << std::endl;
 
 	server->Send("Message received! :)");
 

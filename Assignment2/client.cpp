@@ -7,8 +7,8 @@ int main()
 	client->Connect();
 
 	client->Send("Hello from client!");
-	auto buffer = client->Read();
-	std::cout << buffer->Data << std::endl;
+	std::string data = client->Read();
+	std::cout << data << std::endl;
 
 	return 0;
 }
