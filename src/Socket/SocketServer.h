@@ -102,9 +102,9 @@ namespace Socket {
 		}
 
 		char *buffer = new char[m_Props.BufferSize];
-		read(socket, buffer, m_Props.BufferSize);
+		uint32_t readSize = read(socket, buffer, m_Props.BufferSize);
 
-		std::string data(buffer);
+		std::string data(buffer, readSize);
 		delete[] buffer;
 
 		return data;

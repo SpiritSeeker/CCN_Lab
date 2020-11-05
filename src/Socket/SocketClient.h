@@ -68,9 +68,9 @@ namespace Socket {
 	std::string SocketClient::Read()
 	{
 		char *buffer = new char[m_Props.BufferSize];
-		read(m_ClientDescriptor, buffer, m_Props.BufferSize);
+		uint32_t readSize = read(m_ClientDescriptor, buffer, m_Props.BufferSize);
 
-		std::string data(buffer);
+		std::string data(buffer, readSize);
 		delete[] buffer;
 
 		return data;
